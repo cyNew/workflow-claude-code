@@ -13,18 +13,18 @@ Instead of separate commands for small fixes, large features, and new projects, 
 
 ```bash
 # Add marketplace
-/plugin marketplace add cyNew/claude-plugin-workflow
+/plugin marketplace add cyNew/workflow-claude-code
 
 # Install the plugin
-/plugin install workflow@claude-plugin-workflow
+/plugin install workflow@workflow-claude-code
 ```
 
 ### Local development / direct testing
 
 ```bash
 # Install after adding marketplace
-/plugin marketplace add ./path/to/claude-plugin-workflow
-/plugin install workflow@claude-plugin-workflow
+/plugin marketplace add ./path/to/workflow-claude-code
+/plugin install workflow@workflow-claude-code
 
 # or start with
 claude --plugin-dir ./plugins/workflow
