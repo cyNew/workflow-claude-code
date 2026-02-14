@@ -20,14 +20,17 @@ When evaluating the impact of a proposed change, follow this systematic approach
 
 Apply these rules to determine task size:
 
-| Criteria | Small | Large |
-|----------|-------|-------|
-| Files changed | ≤5 | >5 |
-| Modules touched | 1 | >1 |
-| DB schema changes | No | Yes |
-| API contract changes | No | Yes |
-| New dependencies | No | Yes |
-| Breaking changes | None | Possible |
+| Criteria             | Trivial | Small | Large    |
+|----------------------|---------|-------|----------|
+| Files changed        | ≤2      | ≤5    | >5       |
+| Modules touched      | 1       | 1     | >1       |
+| DB schema changes    | No      | No    | Yes      |
+| API contract changes | No      | No    | Yes      |
+| New dependencies     | No      | No    | Yes      |
+| Breaking changes     | None    | None  | Possible |
+| Scope obvious?       | Yes     | —     | —        |
+
+If ALL Trivial criteria are met and the scope is immediately obvious from the requirement, classify as **Trivial**. Trivial tasks skip impact assessment and task records entirely.
 
 If ANY "Large" criterion is met, the task is **Large**.
 

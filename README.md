@@ -69,27 +69,43 @@ Copy `.mcp.json.example` to `.mcp.json` and customize. The `scout` agent can lev
 | PreToolUse | `git push --force`, `git reset --hard`, `git clean -fd` | Blocks destructive git operations |
 | PostToolUse | `Edit\|Write\|MultiEdit` | Auto-formats changed files (Prettier for JS/TS, Black/Ruff for Python) |
 
-## Workflow
+## Workflow Overview
+
+The plugin components work together in a pipeline:
+
+### Full workflow via `/task` (recommended entry point)
 
 ```
 User: /task <requirement>
   │
-  ├─ Phase 1: Understand requirement (clarify if needed)
-  ├─ Phase 2: Impact assessment (scout → scans codebase + web)
-  ├─ Phase 2.5: Create task record → docs/plans/YYYY-MM-DD-slug.md
-  ├─ Phase 3: Auto-size → route to pipeline
+  ├─ Phase 1: Understand requirement    ← skill: requirement-analysis
   │
-  ├─ Small  → coder agent → verify result → update record → report
-  ├─ Large  → decompose → confirm plan → save plan → coder agent per sub-task → update record → integration review
-  └─ New    → architecture → confirm → save → milestones → coder agent per milestone → update record
+  ├─ Phase 1.5: Quick Triage
+  │   ├─ Trivial → implement directly → verify → done (no task record)
+  │   └─ Not trivial → continue ↓
   │
-  ├─ /review → code-reviewer agent (independent context)
-  └─ /ship   → tests → commit (with task record ref) → set status: done
+  ├─ Phase 2: Impact Assessment         ← skill: impact-assessment, agent: scout
+  │
+  ├─ Phase 2.5: Create task record      → docs/plans/YYYY-MM-DD-slug.md
+  │
+  └─ Phase 3: Route by Size
+      ├─ Small  → agent: coder → verify → update record → report
+      ├─ Large  → skill: task-decomposition → agent: coder (×N) → integration review
+      └─ New    → architecture → milestones → agent: coder (×N) → integration review
 ```
+
+### Standalone commands
+
+| Command | Use when | Components used |
+|---------|----------|-----------------|
+| `/task` | New task, unknown scope | scout + coder + skills |
+| `/implement` | Know exactly what to change | coder only |
+| `/review` | Changes done, want a second look | code-reviewer |
+| `/ship` | Ready to commit and push | tests + git |
 
 ### Task Records
 
-Every `/task` run creates a markdown file in `docs/plans/` that preserves:
+For non-trivial tasks, `/task` creates a markdown file in `docs/plans/` that preserves:
 - Original requirement (verbatim)
 - Impact assessment results
 - Execution plan (updated if plan changes mid-flight)

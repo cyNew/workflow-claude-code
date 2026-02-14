@@ -1,7 +1,7 @@
 {
   "name": "workflow",
   "description": "Unified development workflow plugin with automatic task sizing, impact assessment, and structured execution pipeline. Handles small fixes, large features, and greenfield projects through a single /task entry point.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": {
     "name": "ZHANG Chengyu"
   },

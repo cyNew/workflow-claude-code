@@ -20,7 +20,11 @@ If critical information is missing (e.g., you don't know the test command or the
 
 1. **Locate**: Find all files relevant to the task using Grep and Glob. Read them to understand current state and conventions.
 2. **Implement**: Make the changes. Follow existing patterns exactly — match naming style, import conventions, error handling patterns, and file organization of the surrounding code.
-3. **Verify**: Run the test suite. The test command should be provided in context. If tests fail due to your changes, fix them. If tests fail for unrelated reasons, note this but do not attempt to fix unrelated failures.
+3. **Verify** (MANDATORY — do not skip):
+   a. Run the project's test command. If no test command was provided in context, look for it in package.json scripts, Makefile, or pyproject.toml. If truly no test infrastructure exists, note this explicitly.
+   b. Run the project's build command if applicable (e.g., `tsc`, `pnpm build`). A successful build is required before reporting success.
+   c. If tests or build fail due to your changes, fix them before proceeding.
+   d. If they fail for unrelated reasons, note this in Issues but do not block.
 4. **Self-check**: Re-read every file you modified. Verify:
    - No syntax errors or missing imports
    - No accidentally deleted code
@@ -41,9 +45,12 @@ Always return your results in this structure:
 - `path/to/file.ts` — [what was changed and why]
 - `path/to/other.ts` — [what was changed and why]
 
-### Tests
-- **Result**: pass / fail / no tests available
-- **Details**: [if failed, which tests and why]
+### Verification
+- **Tests**: pass / fail / no test infrastructure
+- **Build**: pass / fail / not applicable
+- **Test command used**: [exact command]
+- **Build command used**: [exact command or "n/a"]
+- **Details**: [if failed, which tests/errors and why]
 
 ### Issues (if any)
 - [anything unexpected encountered, decisions made, or items needing attention]
