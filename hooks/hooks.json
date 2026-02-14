@@ -1,0 +1,35 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash(git commit.*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Pre-commit check: verifying tests...' >&2 && if [ -f package.json ] && grep -q '\"test\"' package.json; then npm test --silent 2>&1 || { echo 'Tests failed. Fix tests before committing.' >&2; exit 2; }; elif [ -f Makefile ] && grep -q '^test:' Makefile; then make test 2>&1 || { echo 'Tests failed. Fix tests before committing.' >&2; exit 2; }; elif [ -f pyproject.toml ] || [ -f setup.py ]; then python -m pytest --quiet 2>&1 || { echo 'Tests failed. Fix tests before committing.' >&2; exit 2; }; fi; exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git push.*--force.*|git reset --hard.*|git clean -fd.*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Blocked: destructive git operation requires explicit user approval.' >&2; exit 2"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | { read file_path; if [ -n \"$file_path\" ]; then if echo \"$file_path\" | grep -qE '\\.ts$|\\.tsx$|\\.js$|\\.jsx$'; then if command -v npx >/dev/null 2>&1 && [ -f node_modules/.bin/prettier ]; then npx prettier --write \"$file_path\" 2>/dev/null; fi; elif echo \"$file_path\" | grep -qE '\\.py$'; then if command -v black >/dev/null 2>&1; then black --quiet \"$file_path\" 2>/dev/null; elif command -v ruff >/dev/null 2>&1; then ruff format \"$file_path\" 2>/dev/null; fi; fi; fi; }; exit 0"
+          }
+        ]
+      }
+    ]
+  }
+}

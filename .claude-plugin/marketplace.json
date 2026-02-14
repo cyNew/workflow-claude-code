@@ -1,0 +1,26 @@
+{
+  "name": "workflow-claude-code",
+  "owner": {
+    "name": "ZHANG Chengyu"
+  },
+  "metadata": {
+    "description": "Unified development workflow plugin with automatic task sizing, impact assessment, and structured execution pipeline. Handles small fixes, large features, and greenfield projects through a single /task entry point.",
+    "version": "0.0.1"
+  },
+  "plugins": [
+    {
+      "name": "workflow",
+      "source": "./",
+      "description": "Unified development workflow plugin with automatic task sizing, impact assessment, and structured execution pipeline. Handles small fixes, large features, and greenfield projects through a single /task entry point.",
+      "version": "0.0.1",
+      "author": {
+        "name": "ZHANG Chengyu"
+      },
+      "homepage": "https://github.com/cyNew/workflow-claude-code",
+      "repository": "https://github.com/cyNew/workflow-claude-code",
+      "license": "MIT",
+      "keywords": ["workflow", "task", "development", "code-review", "impact-assessment"],
+      "category": "productivity"
+    }
+  ]
+}

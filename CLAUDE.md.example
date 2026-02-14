@@ -1,0 +1,29 @@
+# Development Workflow Integration
+
+This project uses the `workflow` plugin. The plugin provides a structured development pipeline through the `/task` command.
+
+## Workflow Mode
+
+The workflow mode is controlled by a flag file at the project root:
+
+- **Enabled**: When `.workflow-enabled` file exists, ALL development tasks (bug fixes, feature requests, new projects) MUST follow the full workflow: understand requirement → assess impact → determine size (small/large/new-project) → execute the corresponding pipeline. This applies even when the user describes the task in natural language without using `/task`.
+- **Disabled (default)**: When `.workflow-enabled` does not exist, work normally. The `/task`, `/implement`, `/review`, and `/ship` commands are still available for explicit use, but no automatic workflow is enforced.
+
+To toggle:
+- Enable: `touch .workflow-enabled`
+- Disable: `rm .workflow-enabled`
+
+## Quick Reference
+
+When workflow mode is enabled and you receive a development task:
+
+1. Check if the requirement is clear. If not, ask ONE clarifying question.
+2. Scan the codebase for impact (files, modules, APIs, DB, dependencies).
+3. Produce an Impact Summary and classify as small / large / new-project.
+4. Follow the corresponding pipeline:
+   - **Small**: implement → test → self-review → report
+   - **Large**: decompose into sub-tasks → confirm plan → execute each as small → integration review
+   - **New project**: propose architecture → confirm → decompose into milestones → execute
+5. After all changes, ask before committing.
+
+When workflow mode is disabled, simply help the user with whatever they ask, using the plugin commands only when explicitly invoked.
